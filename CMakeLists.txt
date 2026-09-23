@@ -5,6 +5,9 @@ project(device_health_monitor)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
+include_directories(include)
+
 add_executable(device-health-monitor
     src/main.cpp
+    src/config_manager.cpp
 )
