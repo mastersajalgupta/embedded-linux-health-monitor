@@ -5,6 +5,7 @@
 #include "logger.h"
 #include "cpu_monitor.h"
 #include "memory_monitor.h"
+#include "disk_monitor.h"
 
 int main() {
 
@@ -21,6 +22,7 @@ int main() {
 
     CpuMonitor cpu;
     MemoryMonitor memory;
+    DiskMonitor disk;
 
     cpu.getUsage();
 
@@ -30,12 +32,16 @@ int main() {
 
         double cpuUsage = cpu.getUsage();
         double memoryUsage = memory.getUsage();
+        double diskUsage = disk.getUsage();
 
         std::cout << "CPU Usage: "
                   << cpuUsage << "%" << std::endl;
 
         std::cout << "Memory Usage: "
                   << memoryUsage << "%" << std::endl;
+
+        std::cout << "Disk Usage: "
+                  << diskUsage << "%" << std::endl;
 
         if (cpuUsage >= config.getCpuThreshold()) {
             Logger::warning("CPU usage is high");
@@ -45,10 +51,14 @@ int main() {
             Logger::warning("Memory usage is high");
         }
 
+        if (diskUsage >= config.getDiskThreshold()) {
+            Logger::warning("Disk usage is high");
+        }
+
         std::cout << std::endl;
     }
 
-    Logger::info("CPU and Memory Monitor Test Completed");
+    Logger::info("CPU, Memory and Disk Monitor Test Completed");
 
     return 0;
 }

@@ -13,4 +13,5 @@ add_executable(device-health-monitor
     src/logger.cpp
     src/cpu_monitor.cpp
    src/memory_monitor.cpp
+   src/disk_monitor.cpp
 )
