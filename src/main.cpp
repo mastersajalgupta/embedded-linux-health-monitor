@@ -1,6 +1,9 @@
 #include <iostream>
+#include <thread>
+#include <chrono>
 #include "config_manager.h"
 #include "logger.h"
+#include "cpu_monitor.h"
 
 int main() {
 
@@ -15,22 +18,24 @@ int main() {
 
     Logger::info("Configuration loaded successfully");
 
-    std::cout << "CPU Threshold: "
-              << config.getCpuThreshold() << "%" << std::endl;
+    CpuMonitor cpu;
 
-    std::cout << "Memory Threshold: "
-              << config.getMemoryThreshold() << "%" << std::endl;
+    cpu.getUsage();
 
-    std::cout << "Disk Threshold: "
-              << config.getDiskThreshold() << "%" << std::endl;
+    for (int i = 0; i < 5; i++) {
 
-    std::cout << "Temperature Threshold: "
-              << config.getTemperatureThreshold() << " C" << std::endl;
+        std::this_thread::sleep_for(std::chrono::seconds(1));
 
-    std::cout << "Check Interval: "
-              << config.getCheckInterval() << " seconds" << std::endl;
+        double usage = cpu.getUsage();
 
-    Logger::info("Device Health Monitor Test Completed");
+        std::cout << "CPU Usage: " << usage << "%" << std::endl;
+
+        if (usage >= config.getCpuThreshold()) {
+            Logger::warning("CPU usage is high");
+        }
+    }
+
+    Logger::info("CPU Monitor Test Completed");
 
     return 0;
 }
