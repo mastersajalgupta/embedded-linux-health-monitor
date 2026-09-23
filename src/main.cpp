@@ -1,16 +1,19 @@
 #include <iostream>
 #include "config_manager.h"
+#include "logger.h"
 
 int main() {
+
+    Logger::info("Device Health Monitor Started");
 
     ConfigManager config;
 
     if (!config.load("../config/health_monitor.json")) {
-        std::cout << "Failed to load configuration" << std::endl;
+        Logger::error("Failed to load configuration");
         return 1;
     }
 
-    std::cout << "Configuration loaded successfully" << std::endl;
+    Logger::info("Configuration loaded successfully");
 
     std::cout << "CPU Threshold: "
               << config.getCpuThreshold() << "%" << std::endl;
@@ -26,6 +29,8 @@ int main() {
 
     std::cout << "Check Interval: "
               << config.getCheckInterval() << " seconds" << std::endl;
+
+    Logger::info("Device Health Monitor Test Completed");
 
     return 0;
 }
