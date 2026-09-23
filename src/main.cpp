@@ -4,6 +4,7 @@
 #include "config_manager.h"
 #include "logger.h"
 #include "cpu_monitor.h"
+#include "memory_monitor.h"
 
 int main() {
 
@@ -19,6 +20,7 @@ int main() {
     Logger::info("Configuration loaded successfully");
 
     CpuMonitor cpu;
+    MemoryMonitor memory;
 
     cpu.getUsage();
 
@@ -26,16 +28,27 @@ int main() {
 
         std::this_thread::sleep_for(std::chrono::seconds(1));
 
-        double usage = cpu.getUsage();
+        double cpuUsage = cpu.getUsage();
+        double memoryUsage = memory.getUsage();
 
-        std::cout << "CPU Usage: " << usage << "%" << std::endl;
+        std::cout << "CPU Usage: "
+                  << cpuUsage << "%" << std::endl;
 
-        if (usage >= config.getCpuThreshold()) {
+        std::cout << "Memory Usage: "
+                  << memoryUsage << "%" << std::endl;
+
+        if (cpuUsage >= config.getCpuThreshold()) {
             Logger::warning("CPU usage is high");
         }
+
+        if (memoryUsage >= config.getMemoryThreshold()) {
+            Logger::warning("Memory usage is high");
+        }
+
+        std::cout << std::endl;
     }
 
-    Logger::info("CPU Monitor Test Completed");
+    Logger::info("CPU and Memory Monitor Test Completed");
 
     return 0;
 }
