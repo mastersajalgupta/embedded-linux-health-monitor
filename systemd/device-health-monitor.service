@@ -1,0 +1,13 @@
+[Unit]
+Description=Embedded Linux Device Health Monitor
+After=network.target mysql.service
+
+[Service]
+Type=simple
+ExecStart=/home/sangam/projects/embedded-linux-health-monitor/build/device-health-monitor
+Restart=always
+RestartSec=5
+User=root
+
+[Install]
+WantedBy=multi-user.target

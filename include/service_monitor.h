@@ -6,6 +6,7 @@
 class ServiceMonitor {
 public:
     bool isRunning(const std::string& serviceName);
+    bool restart(const std::string& serviceName);
 };
 
 #endif
