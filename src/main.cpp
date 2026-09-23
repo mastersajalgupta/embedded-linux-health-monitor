@@ -6,6 +6,7 @@
 #include "cpu_monitor.h"
 #include "memory_monitor.h"
 #include "disk_monitor.h"
+#include "temperature_monitor.h"
 
 int main() {
 
@@ -23,6 +24,7 @@ int main() {
     CpuMonitor cpu;
     MemoryMonitor memory;
     DiskMonitor disk;
+    TemperatureMonitor temperature;
 
     cpu.getUsage();
 
@@ -33,6 +35,7 @@ int main() {
         double cpuUsage = cpu.getUsage();
         double memoryUsage = memory.getUsage();
         double diskUsage = disk.getUsage();
+        double temperatureValue = temperature.getTemperature();
 
         std::cout << "CPU Usage: "
                   << cpuUsage << "%" << std::endl;
@@ -42,6 +45,15 @@ int main() {
 
         std::cout << "Disk Usage: "
                   << diskUsage << "%" << std::endl;
+
+        if (temperatureValue >= 0) {
+            std::cout << "Temperature: "
+                      << temperatureValue << " C"
+                      << std::endl;
+        } else {
+            std::cout << "Temperature: Sensor unavailable"
+                      << std::endl;
+        }
 
         if (cpuUsage >= config.getCpuThreshold()) {
             Logger::warning("CPU usage is high");
@@ -55,10 +67,14 @@ int main() {
             Logger::warning("Disk usage is high");
         }
 
+        if (temperatureValue >= config.getTemperatureThreshold()) {
+            Logger::warning("Temperature is high");
+        }
+
         std::cout << std::endl;
     }
 
-    Logger::info("CPU, Memory and Disk Monitor Test Completed");
+    Logger::info("CPU, Memory, Disk and Temperature Monitor Test Completed");
 
     return 0;
 }
